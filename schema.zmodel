@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+plugin trpc {
+    provider = "@zenstackhq/trpc"
+    version = "v11"
+    output = "./src/server/api/routers/generated"
+    importCreateRouter = "~/server/api/trpc"
+    importProcedure = "~/server/api/trpc"
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+}
